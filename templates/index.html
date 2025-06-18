@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h1 class="sidebar-title">AI Video Creator</h1>
+            <div class="sidebar-nav">
+                <button class="tab-button active" onclick="openTab(event, 'tab1')">1. Add Content</button>
+                <button class="tab-button" onclick="openTab(event, 'tab2')" id="tabButton2" disabled>2. Personalize Script</button>
+                <button class="tab-button" onclick="openTab(event, 'tab3')" id="tabButton3" disabled>3. Select Avatar</button>
+                <button class="tab-button" onclick="openTab(event, 'tab4')" id="tabButton4" disabled>4. View Video</button>
+            </div>
+            <div class="sidebar-section-divider"></div>
+            <div class="sidebar-nav">
+                 <button class="tab-button" onclick="openTab(event, 'dashboard')">Your Videos</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <h1>🚀 Content to Video Generator</h1>
+            <p>Transform your documents or text into a video presentation in a few simple steps.</p>
+
+            <!-- Tab 1: Content Input -->
+            <div id="tab1" class="tab-content" style="display: block;">
+                <h2>Step 1: Provide Content & Personalize</h2>
+                <form id="contentForm">
+                    <div class="input-method">
+                        <label><input type="radio" name="inputMethod" value="file" checked> Upload a file</label>
+                        <label><input type="radio" name="inputMethod" value="text"> Paste text</label>
+                    </div>
+                    <div id="file-input-container">
+                        <input type="file" id="fileInput" name="file" accept=".pdf,.docx">
+                    </div>
+                    <div id="text-input-container" style="display: none;">
+                        <textarea id="textContent" name="text_content" rows="10" placeholder="Write Something Here....."></textarea>
+                    </div>
+                    <div id="personalization-options" style="display: none;">
+                        <h3>Personalize the Output</h3>
+                        <label for="task">What should the AI do?</label><br>
+                        <input type="text" id="task" name="task" value="Extract key points for a presentation">
+                        <br>
+                        <label for="language">Language</label>
+                        <select id="language" name="language">
+                            <option value="english">English</option>
+                            <option value="Hindi">Hindi</option>
+                        </select>
+                        <label for="num_points">Number of points (5-20):</label>
+                        <input type="range" id="num_points" name="num_points" min="5" max="20" value="10">
+                        <span id="num_points_value">10</span>
+                    </div>
+                    <button type="submit" id="generateScriptBtn">Generate Script</button>
+                </form>
+            </div>
+                   
+            <!-- Tab 2: Personalize Script -->
+            <div id="tab2" class="tab-content">
+                <label for="videoTitle"><b>Video Title</b></label>
+                <input type="text" id="videoTitle" placeholder="Enter a title for your video..." style="margin-bottom: 1.5rem;">
+
+                <h2>Step 2: Customize Your Video Script</h2>
+                <p>You can edit your generated script below. When you're happy with it, continue to the next step.</p>
+                <div id="script-container" class="result-box">
+                    <h3>Generated Script (Editable):</h3>
+                    <textarea id="script-output" rows="15"></textarea> 
+                </div>
+                <button id="goToAvatarBtn" class="primary-action">Continue to Avatar Selection →</button>
+            </div>
+
+            <!-- Tab 3: Select Avatar -->
+            <div id="tab3" class="tab-content">
+                <h2>Step 3: Select Your Avatar</h2>
+                <div id="avatar-selection-container" class="result-box">
+                    <h3>Choose a presenter for your video:</h3>
+                    <div id="avatar-selection-grid">
+                        <!-- Avatars will be dynamically inserted here -->
+                    </div>
+                </div>
+                <button type="submit" id="generateVideoBtn" class="primary-action">✨ Generate Video Presentation</button>
+            </div>
+
+            <!-- Tab 4: Video Display -->
+            <div id="tab4" class="tab-content">
+                <h2>Step 4: Watch Your Presentation</h2>
+                <div id="video-container">
+                    <div id="loader" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>🎬 Generating video with HeyGen... This may take a few minutes.</p>
+                    </div>
+                    <div id="video-player-wrapper" style="display: none;">
+                        <h3>🎉 Your video is ready!</h3>
+                        <video id="video-player" controls width="80%"></video>
+                    </div>
+                     <p id="video-error" class="error-message" style="display: none;"></p>
+                </div>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content">
+                <h2>Your Videos</h2>
+                <div class="dashboard-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-table-body">
+                            <!-- Video rows will be inserted here by script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    
+   
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage-compat.js"></script>
+    <script defer src="{{ url_for('static', filename='script.js') }}"></script>
+ 
+</body>
+</html>
